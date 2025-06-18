@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portunnel.Host", "Portunnel.Host\Portunnel.Host.csproj", "{59184B97-4845-4A50-A0CC-F3EF452110EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portunnel.Proxy", "Portunnel.Proxy\Portunnel.Proxy.csproj", "{7182E461-560C-45F5-8E56-A27DAAC25324}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portunnel.Models", "Portunnel.Models\Portunnel.Models.csproj", "{31F11238-1CEB-4925-9F9C-B43A10989D55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portunnel.Cli", "Portunnel.Cli\Portunnel.Cli.csproj", "{8202EFAA-3DF3-449E-9A7F-BCBA76606298}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portunnel.UI", "Portunnel.UI\Portunnel.UI.csproj", "{F56A9265-01F8-47C1-B15D-6D4FA8279B73}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59184B97-4845-4A50-A0CC-F3EF452110EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59184B97-4845-4A50-A0CC-F3EF452110EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59184B97-4845-4A50-A0CC-F3EF452110EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59184B97-4845-4A50-A0CC-F3EF452110EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7182E461-560C-45F5-8E56-A27DAAC25324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7182E461-560C-45F5-8E56-A27DAAC25324}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7182E461-560C-45F5-8E56-A27DAAC25324}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7182E461-560C-45F5-8E56-A27DAAC25324}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31F11238-1CEB-4925-9F9C-B43A10989D55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F11238-1CEB-4925-9F9C-B43A10989D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31F11238-1CEB-4925-9F9C-B43A10989D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31F11238-1CEB-4925-9F9C-B43A10989D55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8202EFAA-3DF3-449E-9A7F-BCBA76606298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8202EFAA-3DF3-449E-9A7F-BCBA76606298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8202EFAA-3DF3-449E-9A7F-BCBA76606298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8202EFAA-3DF3-449E-9A7F-BCBA76606298}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F56A9265-01F8-47C1-B15D-6D4FA8279B73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F56A9265-01F8-47C1-B15D-6D4FA8279B73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F56A9265-01F8-47C1-B15D-6D4FA8279B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F56A9265-01F8-47C1-B15D-6D4FA8279B73}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

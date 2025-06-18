@@ -1,0 +1,180 @@
+﻿@page "/"
+@using Portunnel.Proxy.Services
+@rendermode InteractiveServer
+
+@inject IRelayService Relay
+@inject IOptionsProvider Options
+@inject IUrlValidator UrlValidator
+
+<PageTitle>Portunnel</PageTitle>
+
+<div class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="container">
+        <div class="container">
+            <EditForm method="post" Model="@_model" OnValidSubmit="HandleRegister">
+                <DataAnnotationsValidator/>
+                <AntiforgeryToken/>
+                <div class="row-cols-auto">
+                    <div class="row align-items-center p-1">
+                        <div class="col-2">Portunnel host url:</div>
+                        <div class="col-10">
+                            <InputText class="form-control w-100" type="url" @bind-Value="_model.HostUri"
+                                       placeholder="Enter Portunnel host url"/>
+                            <ValidationMessage For="() => _model.HostUri" class="invalid-feedback"/>
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-1">
+                        <div class="col-2"><label>Portunnel api key:</label></div>
+                        <div class="col-10">
+                            <InputText class="form-control w-100" type="password"
+                                       @bind-Value="_model.HostApiKey"
+                                       placeholder="Enter host api key"/>
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-1">
+                        <div class="col-2"><label>Local service url:</label></div>
+                        <div class="col-10">
+                            <InputText class="form-control w-100" type="url"
+                                       @bind-Value="_model.TargetServiceUri"
+                                       placeholder="Enter local service url to be forwarded to"/>
+                            <ValidationMessage For="() => _model.TargetServiceUri" class="invalid-feedback"/>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-12 text-center">
+                            <button class="btn btn-primary" type="submit" @onclick="HandleRegister"
+                                    disabled="@(Relay.IsConnected())">Register
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+        @* @if (!_isRegistered) *@
+        @if (true)
+        {
+            <div class="container">
+                <div class="d-flex align-items-center justify-content-center flex-row">
+                    <div class="d-flex p-1 w-25 justify-content-end align-content-end">
+                        <div>Connection url is:</div>
+                    </div>
+                    <div class="d-flex p-1 w-75">
+                        <InputText class="w-100" disabled="" @bind-Value="_model.ConnectedTo"/>
+                        <div class="d-flex p-0">
+                            <div class="p-0">
+                                <button @onclick="HandleCopyToClipboard" @onclick:stopPropagation class="icon-button">
+                                    @* <span> *@
+                                    <svg class="icon-button-icon" viewBox="0 -960 960 960" fill="#e3e3e3" height="24px"
+                                         width="24px">
+                                        <path
+                                            d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/>
+                                    </svg>
+                                    @* </span> *@
+                                </button>
+                            </div>
+                            <div class="p-0 align-self-center">
+                                <button @onclick="HandleUnregister">Unregister</button>
+                            </div>
+                        </div>
+                        <div class="copied-feedback-container">
+                            @if (_showCopiedFeedback)
+                            {
+                                <div class="copied-feedback align-content-center m-1">Copied!</div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    private bool _isRegistered = false;
+    private readonly string _connectionUrl = string.Empty;
+    private readonly ConnectionModel _model = new();
+    private bool _isRegistrationHandling;
+
+    private bool _showCopiedFeedback;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _model.HostUri = Options.HostUrl;
+        _model.HostApiKey = Options.HostApiKey;
+        _model.TargetServiceUri = Options.TargetServiceUrl;
+
+        await base.OnInitializedAsync();
+    }
+
+    async Task HandleRegister()
+    {
+        if (_isRegistrationHandling)
+            return;
+
+        _isRegistrationHandling = true;
+
+        Options.HostUrl = _model.HostUri;
+        Options.HostApiKey = _model.HostApiKey;
+        Options.TargetServiceUrl = _model.TargetServiceUri;
+
+        await Relay.Connect();
+        var serviceId = await Relay.Register();
+
+        _model.ConnectedTo = $"{Options.HostUrl}/{serviceId}";
+
+        _isRegistered = true;
+        _isRegistrationHandling = false;
+    }
+
+    async Task HandleUnregister()
+    {
+        await Relay.Unregister();
+        _model.ConnectedTo = string.Empty;
+        await Relay.Disconnect();
+        _isRegistered = false;
+    }
+
+    async Task HandleCopyToClipboard(MouseEventArgs args)
+    {
+        if (string.IsNullOrEmpty(_model.ConnectedTo) is false)
+        {
+            await CopyToClipboard(_model.ConnectedTo);
+            await ShowNotification();
+        }
+
+        await OnClick.InvokeAsync(args);
+    }
+
+    private async Task CopyToClipboard(string text)
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", text);
+        }
+        catch (JSException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private async Task ShowNotification()
+    {
+        _showCopiedFeedback = true;
+        StateHasChanged();
+        await Task.WhenAll(Task.Delay(3000), InvokeAsync(StateHasChanged));
+
+        _showCopiedFeedback = false;
+        StateHasChanged();
+    }
+
+}
