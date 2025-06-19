@@ -6,8 +6,27 @@
         <Nullable>enable</Nullable>
         <LangVersion>default</LangVersion>
         <OutputType>Library</OutputType>
+        <IsPackable>true</IsPackable>
+        <Version>1.0.0-alpha.1</Version>
+        <Title>Portunnel.Host</Title>
+        <Authors>Sensible Dev</Authors>
+        <Description>Simple Request Tunneling Tool</Description>
+        <Copyright>Copyright (c) Sensible Dev 2025</Copyright>
+        <PackageProjectUrl>https://github.com/sensible-dev-com/portunnel</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/sensible-dev-com/portunnel</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+    
     <ItemGroup>
         <ProjectReference Include="..\Portunnel.Models\Portunnel.Models.csproj"/>
     </ItemGroup>

@@ -1,7 +1,6 @@
 ﻿using System.Net.WebSockets;
 using System.Threading.Channels;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Portunnel.Host.Hubs;
 using Portunnel.Models;
@@ -11,7 +10,6 @@ namespace Portunnel.Host.Middlewares;
 public class PortunnelMiddleware(
   IHubContext<RelayHub, IRelayClient> hubContext,
   IConnectionMapper connectionMapper,
-  IMemoryCache memoryCache,
   IOptions<PortunnelOptions> options, ILogger<PortunnelMiddleware> logger) : IMiddleware
 {
   private readonly ILogger<PortunnelMiddleware> _logger = logger;

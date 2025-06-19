@@ -1,6 +1,7 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
+using Microsoft.AspNetCore.SignalR;
 using Portunnel.Proxy.Services;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -102,13 +103,13 @@ async Task<int> DoRootCommand(IRelayService relayService, string hostUrl, Cancel
     await relayService.Connect();
     var clientId = await relayService.Register();
     Console.Out.WriteLine($"\e[32mConnection URL is: '{hostUrl}/{clientId}'\e[0m");
-    
+
     while (relayService.IsConnected())
     {
       cancellationToken.ThrowIfCancellationRequested();
       await Task.Delay(1000, cancellationToken);
     }
-    
+
     Console.Out.WriteLine("Connection to the host is terminated.");
     return 0;
   }
@@ -116,5 +117,15 @@ async Task<int> DoRootCommand(IRelayService relayService, string hostUrl, Cancel
   {
     Console.Out.WriteLine("Application terminated");
     return 0;
+  }
+  catch (HubException hubException)
+  {
+    Console.Out.WriteLine(hubException.Message);
+    return 1;
+  }
+  catch (Exception e)
+  {
+    Console.Out.WriteLine(e.Message);
+    return 1;
   }
 }

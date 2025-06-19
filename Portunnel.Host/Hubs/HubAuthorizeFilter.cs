@@ -20,6 +20,6 @@ public class HubAuthorizeFilter : IHubFilter
       return next(context);
     }
 
-    throw new UnauthorizedAccessException();
+    throw new HubException("Unauthorized access denied");
   }
 }

@@ -55,12 +55,12 @@ public class RelayService : IRelayService
     
     _hubConnection.On<string>("Registered", (message) =>
     {
-      Console.WriteLine($"Registered successfully. {message}");
+      Console.WriteLine($"{message}");
     });
     
     _hubConnection.On<string>("NotRegistered", (message) =>
     {
-      Console.WriteLine($"Not Registered {message}");
+      Console.WriteLine($"{message}");
     });
     
     var uri = new Uri(_options.TargetServiceUrl);
